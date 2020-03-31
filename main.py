@@ -11,8 +11,8 @@ if __name__ == "__main__":
     parser.add_argument("-l", "--layer", help="layer for calculating style matrices", type=int, default=4)
     parser.add_argument("-e", "--epoch", help="epoch for training a model", type=int, default=100)
     parser.add_argument("-r", "--rate", help="learning rate", type=float, default=0.001)
-    parser.add_argument("-d", "--dir", help="directory that contains fasta files for training", default="./data")
-    parser.add_argument("-c", "--contig", help="a fasta file that contains contigs", default="./test.fasta")
+    parser.add_argument("-d", "--dir", help="directory that contains fasta files for training", default="./trainingdata_139")
+    parser.add_argument("-c", "--contig", help="directory that contains fasta files of contigs", default="./test")
     parser.add_argument("--verbose", help="logging level", type=int, default=2)
 
     args = parser.parse_args()
@@ -20,7 +20,7 @@ if __name__ == "__main__":
     device = "cuda" if torch.cuda.is_available() else "cpu"
     device = torch.device(device)
 
-    # Read data
+    # read trainingdata
     if args.verbose > 1: print("Reading fasta...")
     species, seqs, labels = read_all(args.dir)
 
@@ -44,7 +44,8 @@ if __name__ == "__main__":
     for record in SeqIO.parse(args.contig, "fasta"):
         tensor = to_tensor(str(record.seq))
         style_matrix = model.get_style(tensor.to(device), args.layer)
-        
+       
+  
     # Agglomerative Clustering
     from sklearn.cluster import AgglomerativeClustering
     result = AgglomerativeClustering(affinity='euclidean',
@@ -54,17 +55,12 @@ if __name__ == "__main__":
     predictlabel = result.labels_
         
     # evaluate clustering accuracy
-    from sklearn.preprocessing import LabelEncoder
-    le = LabelEncoder()
-    le = le.fit(labels)
-    truelabel = le.transform(labels)
+
     
     from sklearn.metrics.cluster import adjusted_rand_score,homogeneity_score,completeness_score
     ari = adjusted_rand_score(truelabel,predictlabel)
     print("ARI = {:.3f}" .format(ari))
-
     homogeneity = homogeneity_score(truelabel,predictlabel)
     print("homegeneity = {:.3f}" .format(homogeneity))
-
     completeness = completeness_score(truelabel,predictlabel)
     print("completeness = {:.3f}" .format(completeness))
