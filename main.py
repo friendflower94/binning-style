@@ -24,8 +24,9 @@ if __name__ == "__main__":
     if args.verbose > 1: print("Reading fasta...")
     species, seqs, labels = read_all(args.dir)
 
-    loader = DataLoader(batch_size=32, use_all=True, n_batch=500)
+    loader = DataLoader(batch_size=128, use_all=True, n_batch=1000)
     loader(species, seqs, labels)
+    
 
     # train model
     if args.verbose > 1: print("\nTraining model...")
@@ -43,3 +44,27 @@ if __name__ == "__main__":
     for record in SeqIO.parse(args.contig, "fasta"):
         tensor = to_tensor(str(record.seq))
         style_matrix = model.get_style(tensor.to(device), args.layer)
+        
+    # Agglomerative Clustering
+    from sklearn.cluster import AgglomerativeClustering
+    result = AgglomerativeClustering(affinity='euclidean',
+                                     linkage='ward',
+                                     n_clusters=92,
+                                     distance_threshold=None).fit(styles)
+    predictlabel = result.labels_
+        
+    # evaluate clustering accuracy
+    from sklearn.preprocessing import LabelEncoder
+    le = LabelEncoder()
+    le = le.fit(labels)
+    truelabel = le.transform(labels)
+    
+    from sklearn.metrics.cluster import adjusted_rand_score,homogeneity_score,completeness_score
+    ari = adjusted_rand_score(truelabel,predictlabel)
+    print("ARI = {:.3f}" .format(ari))
+
+    homogeneity = homogeneity_score(truelabel,predictlabel)
+    print("homegeneity = {:.3f}" .format(homogeneity))
+
+    completeness = completeness_score(truelabel,predictlabel)
+    print("completeness = {:.3f}" .format(completeness))
