@@ -52,7 +52,7 @@ if __name__ == "__main__":
                                      linkage='ward',
                                      n_clusters=92,
                                      distance_threshold=None).fit(styles)
-    predictlabel = result.labels_
+    predictlabel = result.labels_ 
         
     # evaluate clustering accuracy
 
