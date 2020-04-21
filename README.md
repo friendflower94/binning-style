@@ -10,7 +10,7 @@ You can extract features of bacterial genome sequences with a deep learning appr
 
 ## Usage
 You can train a deep-learning model and extract style matrices running a following command.
-All training data should be in `<DIRECTORY>`, and Style matrices are calculated in `<LAYER>` of the model. `FILEPATH` is where contigs are located. Sequence data must be in fasta format.
+All training data should be in `<DIRECTORY>`, and Style matrices are calculated in `<LAYER>` of the model. `FILEPATH` is where contigs are located. Sequence data must be in fasta format. 
 
 ```
 python main.py --layer <LAYER> --dir <DIRECTORY> --contig <FILEPATH>
