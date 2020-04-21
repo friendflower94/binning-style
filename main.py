@@ -26,8 +26,8 @@ if __name__ == "__main__":
     
     train_loader = DataLoader(length=1024,batch_size=128,n_batches=1000)
     test_loader = DataLoader(length=1024,batch_size=128, n_batches=1000)
-    train_loader(species, seqs, labels_en)
-    test_loader(species, seqs, labels_en)
+    train_loader(species, seqs, labels)
+    test_loader(species, seqs, labels)
 
     # train model
     if args.verbose > 1: print("\nTraining model...")
@@ -42,33 +42,56 @@ if __name__ == "__main__":
     
     # read testdata
     species_test, seqs_test, labels_test = read_all(args.contig)
+   
+    ## calculate style matrix
+    def stylematrix(seq):
+        style = model.cuda().get_style(seq,args.layer)
+        style = style.cpu().detach().squeeze().numpy()
+        style = style[np.triu_indices(style.shape[0])]
+        return style
+
+    ## calculate style
+    def calculate_style(seq):
+        length = seq.shape[-1]
+
+        if length > 1024:
+            split_num = (length-1024)//500 +1
+            for i in range (split_num):
+                style_split = stylematrix(seq[:,:,:1024])
+                if i != 0:
+                    style = np.vstack([style,style_split])
+                else:
+                    style = style_split
+                seq = seq[:,:,500:]
+            style = np.average(style, axis=0)
+
+        else:
+            seq = F.pad(seq,(0,1024-length))
+            style = stylematrix(seq)
+        return style
     
-    # calculate style matrices
-    if args.verbose > 1: print("Extracting style matrices...")
-    
+    # calculate style matrices    
     styles = []
     for i in range(len(seqs)):
         print("\rCalculating... {:0=3}".format(i+1), end="")
         style = calculate_style(seqs[i])
         styles.append(style)
     
+    # label encode
+    from sklearn.preprocessing import LabelEncoder
+    le = LabelEncoder()
+    le = le.fit(labels_test)
+    truelabel = le.transform(labels_test)
     
-    for record in SeqIO.parse(args.contig, "fasta"):
-        tensor = to_tensor(str(record.seq))
-        style_matrix = model.get_style(tensor.to(device), args.layer)
-       
-  
     # Agglomerative Clustering
     from sklearn.cluster import AgglomerativeClustering
     result = AgglomerativeClustering(affinity='euclidean',
                                      linkage='ward',
-                                     n_clusters=92,
+                                     n_clusters=np.unique(truelabel).shape,
                                      distance_threshold=None).fit(styles)
     predictlabel = result.labels_ 
-        
-    # evaluate clustering accuracy
-
     
+    # evaluate clustering accuracy
     from sklearn.metrics.cluster import adjusted_rand_score,homogeneity_score,completeness_score
     ari = adjusted_rand_score(truelabel,predictlabel)
     print("ARI = {:.3f}" .format(ari))
