@@ -21,12 +21,13 @@ if __name__ == "__main__":
     device = torch.device(device)
 
     # read trainingdata
-    if args.verbose > 1: print("Reading fasta...")
+    if args.verbose > 1: print("Reading training data...")
     species, seqs, labels = read_all(args.dir)
-
-    loader = DataLoader(batch_size=128, use_all=True, n_batch=1000)
-    loader(species, seqs, labels)
     
+    train_loader = DataLoader(length=1024,batch_size=128,n_batches=1000)
+    test_loader = DataLoader(length=1024,batch_size=128, n_batches=1000)
+    train_loader(species, seqs, labels_en)
+    test_loader(species, seqs, labels_en)
 
     # train model
     if args.verbose > 1: print("\nTraining model...")
@@ -36,10 +37,21 @@ if __name__ == "__main__":
 
     for epoch in range(args.epoch):
         train(model, device, loader, optimizer, epoch+1)
+        val_loss = test(model, device, test_loader)
         print("")
-
+    
+    # read testdata
+    species_test, seqs_test, labels_test = read_all(args.contig)
+    
     # calculate style matrices
     if args.verbose > 1: print("Extracting style matrices...")
+    
+    styles = []
+    for i in range(len(seqs)):
+        print("\rCalculating... {:0=3}".format(i+1), end="")
+        style = calculate_style(seqs[i])
+        styles.append(style)
+    
     
     for record in SeqIO.parse(args.contig, "fasta"):
         tensor = to_tensor(str(record.seq))
