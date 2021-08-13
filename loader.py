@@ -3,6 +3,7 @@ import numpy as np
 import torch
 import re
 import os
+base = ["A", "T", "G", "C", "N"]
 
 def to_tensor(string):
     seq = sanitize(string)
