@@ -2,6 +2,7 @@ from Bio import SeqIO
 import numpy as np
 import torch
 import re
+import os
 
 def to_tensor(string):
     seq = sanitize(string)
