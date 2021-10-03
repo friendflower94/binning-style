@@ -4,10 +4,10 @@ You can extract features of bacterial genome sequences with a deep learning appr
 
 ## Requirements
 * python 3.6.5 (with following packages)
-  * biopython 1.73
-  * torch 1.1.0
+  * biopython 1.79
+  * torch 1.9.1
   * numpy 1.16.4
-  * bio
+  * bio 1.1.3
 
 ## Usage
 You can train a deep-learning model and extract style matrices running a following command.
