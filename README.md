@@ -7,6 +7,7 @@ You can extract features of bacterial genome sequences with a deep learning appr
   * biopython 1.73
   * torch 1.1.0
   * numpy 1.16.4
+  * bio
 
 ## Usage
 You can train a deep-learning model and extract style matrices running a following command.
