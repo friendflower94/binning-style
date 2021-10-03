@@ -29,7 +29,7 @@ def sanitize(seq):
 def read_one(path):
     seq = None
     name = ""
-​
+    
     for record in SeqIO.parse(path, "fasta"):
         # only complete genome
         
