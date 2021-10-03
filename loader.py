@@ -23,9 +23,9 @@ def sanitize(seq):
     seq = re.sub(r"D", ["A", "G", "T"][np.random.randint(3)], seq)
     seq = re.sub(r"H", ["A", "C", "T"][np.random.randint(3)], seq)
     seq = re.sub(r"M", ["A", "C"][np.random.randint(2)], seq)
-​
+    
     return seq
-​
+
 def read_one(path):
     seq = None
     name = ""
