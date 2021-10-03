@@ -31,8 +31,9 @@ if __name__ == "__main__":
     
     # train model
     if args.verbose > 1: print("\nTraining model...")
-        model = Discriminator(1024, len(species)).double().to(device)
-        optimizer = optim.Adam(model.parameters(), lr=args.rate)
+    
+    model = Discriminator(1024, len(species)).double().to(device)
+    optimizer = optim.Adam(model.parameters(), lr=args.rate)
 
     for epoch in range(args.epoch):
         train(model, device, loader, optimizer, epoch+1)
