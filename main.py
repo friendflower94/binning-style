@@ -13,33 +13,40 @@ if __name__ == "__main__":
     parser.add_argument("-r", "--rate", help="learning rate", type=float, default=0.001)
     parser.add_argument("-d", "--dir", help="directory that contains fasta files for training", default="./trainingdata_139")
     parser.add_argument("-c", "--contig", help="directory that contains fasta files of contigs", default="./test")
-    parser.add_argument("--verbose", help="logging level", type=int, default=2)
-    
-    args = parser.parse_args()
+    parser.add_argument("-o", "--out", help="directory that outputs the binning result", default="./out")
+    parser.add_argument("-v", "--verbose", help="2 when training the model, 0 when using the weights provided", type=int, default=0)
+    parser.add_argument("--weight", "-w", help="model's weight file", default="--model=./weight/modelweight.weight")
     
     device = "cuda" if torch.cuda.is_available() else "cpu"
     device = torch.device(device)
     
     # read trainingdata
-    if args.verbose > 1: print("Reading training data...")
-    species, seqs, labels = read_all(args.dir)
+    if args.verbose > 1:
+        print("Reading training data...")
+        species, seqs, labels = read_all(args.dir)
+        train_loader = DataLoader(length=1024,batch_size=128,n_batches=1000)
+        test_loader = DataLoader(length=1024,batch_size=128, n_batches=1000)
+        train_loader(species, seqs, labels)
+        test_loader(species, seqs, labels)
     
-    train_loader = DataLoader(length=1024,batch_size=128,n_batches=1000)
-    test_loader = DataLoader(length=1024,batch_size=128, n_batches=1000)
-    train_loader(species, seqs, labels)
-    test_loader(species, seqs, labels)
+        # train model
+        if args.verbose > 1: print("\nTraining model...")
     
-    # train model
-    if args.verbose > 1: print("\nTraining model...")
-    
-    model = Discriminator(1024, len(species)).double().to(device)
-    optimizer = optim.Adam(model.parameters(), lr=args.rate)
+        model = Discriminator(1024, len(species)).double().to(device)
+        optimizer = optim.Adam(model.parameters(), lr=args.rate)
 
-    for epoch in range(args.epoch):
-        train(model, device, loader, optimizer, epoch+1)
-        val_loss = test(model, device, test_loader)
-        print("")
-        
+        for epoch in range(args.epoch):
+            train(model, device, loader, optimizer, epoch+1)
+            val_loss = test(model, device, test_loader)
+            print("")
+    
+    if args.verbose < 1:
+        model = Discriminator(1024, 139).float().to(device)
+        model.load_state_dict(torch.load(args.weight))
+        x = torch.ones(1, 4,1024).double().to(device)
+        x = Variable(x, requires_grad=True)
+    
+    
     # read testdata
     species_test, seqs_test, labels_test = read_all(args.contig)
     
