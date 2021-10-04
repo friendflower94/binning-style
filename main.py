@@ -139,10 +139,10 @@ if __name__ == "__main__":
         print("\rCalculating style matrix... {:0=3}/{:0=3}".format(i+1, len(seqs_test)), end="")
         style = calculate_style(torch.tensor(seqs_test[i]).unsqueeze(0).float().to(device))
         styles.append(style)
-    print("-->Completed calculating style matrix")
+    print("\n-->Completed calculating style matrix")
     
     # Agglomerative Clustering
-    print("\nClustering...")
+    print("Clustering...")
     from sklearn.cluster import AgglomerativeClustering
     result = AgglomerativeClustering(affinity='euclidean',
                                      linkage='ward',
@@ -159,17 +159,17 @@ if __name__ == "__main__":
                 f.write(str(k)+"\n")
     print("-->Completed outputting binning result:", str(args.out))
     
-    # label encode
-    from sklearn.preprocessing import LabelEncoder
-    le = LabelEncoder()
-    le = le.fit(labels_test)
-    truelabel = le.transform(labels_test)
+    ### label encode
+    #from sklearn.preprocessing import LabelEncoder
+    #le = LabelEncoder()
+    #le = le.fit(labels_test)
+    #truelabel = le.transform(labels_test)
     
-    # evaluate clustering accuracy
-    from sklearn.metrics.cluster import adjusted_rand_score,homogeneity_score,completeness_score
-    ari = adjusted_rand_score(truelabel,predictlabel)
-    print("ARI = {:.3f}" .format(ari))
-    homogeneity = homogeneity_score(truelabel,predictlabel)
-    print("homegeneity = {:.3f}" .format(homogeneity))
-    completeness = completeness_score(truelabel,predictlabel)
-    print("completeness = {:.3f}" .format(completeness))
+    ### evaluate clustering accuracy
+    #from sklearn.metrics.cluster import adjusted_rand_score,homogeneity_score,completeness_score
+    #ari = adjusted_rand_score(truelabel,predictlabel)
+    #print("ARI = {:.3f}" .format(ari))
+    #homogeneity = homogeneity_score(truelabel,predictlabel)
+    #print("homegeneity = {:.3f}" .format(homogeneity))
+    #completeness = completeness_score(truelabel,predictlabel)
+    #print("completeness = {:.3f}" .format(completeness))
