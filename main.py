@@ -102,12 +102,12 @@ if __name__ == "__main__":
         print(labels[0])
         print(seqs[0])
         print(seqs[0].shape)
-        train_loader = DataLoader(length=1024,batch_size=12,n_batches=50)
+        train_loader = DataLoader(length=1024,batch_size=12,n_batches=100)
         train_loader(labels_en, seqs, labels)
         print(len(train_loader))
 
         # train model
-        if args.verbose > 1: print("\nTraining model...")
+        print("\nTraining model...")
         model = Discriminator(1024, len(labels)).float().to(device)
         optimizer = optim.Adam(model.parameters(), lr=args.rate)
 
