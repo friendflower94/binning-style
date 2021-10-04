@@ -152,11 +152,11 @@ if __name__ == "__main__":
     print("Completed clustering")
     
     with open(args.out, mode='w') as f:
-    for i in range (len(set(predictlabel))):
-        f.write(">bin_"+str(i)+"\n")
-        index=[j for j, x in enumerate(predictlabel) if x == i]
-        for k in index:
-            f.write(str(k)+"\n")
+        for i in range (len(set(predictlabel))):
+            f.write(">bin_"+str(i)+"\n")
+            index=[j for j, x in enumerate(predictlabel) if x == i]
+            for k in index:
+                f.write(str(k)+"\n")
     
     # label encode
     from sklearn.preprocessing import LabelEncoder
