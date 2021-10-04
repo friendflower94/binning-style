@@ -141,7 +141,7 @@ if __name__ == "__main__":
             f.write(">bin_"+str(i)+"\n")
             index=[j for j, x in enumerate(predictlabel) if x == i]
             for k in index:
-                f.write(str(k)+"\n")
+                f.write(labels_test[k]+"\n")
     print("-->Completed outputting binning result:", str(args.out))
     
     ### label encode
