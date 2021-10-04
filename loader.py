@@ -112,7 +112,7 @@ class DataLoader():
         
     def __call__(self, species, seqs, labels):
         self.species, self.seqs, self.labels = species, seqs, labels
-        self.lens = np.array([len(seq[0]) for seq in seqs])
+        self.lens = np.array(seqt.size()[1] for seq in seqs])
         
     def __iter__(self):
         return self
@@ -140,8 +140,8 @@ class DataLoader():
 
             for index, length in zip(indexes, lens):
                 start = np.random.randint(length - self.length)
-                X_batch.append(self.seqs[index][:,start:start+self.length])
-                #X_batch.append(self.seqs[index][:,:,start:start+self.length])
+                #X_batch.append(self.seqs[index][:,start:start+self.length])
+                X_batch.append(self.seqs[index][:,:,start:start+self.length])
                 
 
             return torch.cat(X_batch), self.labels[indexes]
