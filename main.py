@@ -90,21 +90,21 @@ if __name__ == "__main__":
             print("")
     
     if args.verbose < 1:
+        print("Loading trained model:", str(args.model))
         model = Discriminator(1024, 139).float().to(device)
         if device =="cuda":
             model.load_state_dict(torch.load(args.model))
         else:
             model.load_state_dict(torch.load(args.model, map_location=torch.device('cpu')))
-        print("Loading trained model:", str(args.model))
-        print("Completed loading trained model")
+        print("-->Completed loading trained model")
         #x = torch.ones(1, 4,1024).double().to(device)
         #x = Variable(x, requires_grad=True)
     
     
     # read testdata
     seqs_test, labels_test = read_contig(args.contig)
-    print("\nCompleted loading testdata")
-    print("num of contig:", len(labels_test))
+    print("\n-->Completed loading testdata")
+    print("-->num of contig:", len(labels_test))
     
     ## calculate style matrix
     def stylematrix(seq):
@@ -139,7 +139,7 @@ if __name__ == "__main__":
         print("\rCalculating style matrix... {:0=3}/{:0=3}".format(i+1, len(seqs_test)), end="")
         style = calculate_style(torch.tensor(seqs_test[i]).unsqueeze(0).float().to(device))
         styles.append(style)
-    print("Completed calculating style matrix")
+    print("-->Completed calculating style matrix")
     
     # Agglomerative Clustering
     print("\nClustering...")
@@ -149,7 +149,7 @@ if __name__ == "__main__":
                                      n_clusters=args.numofbin,
                                      distance_threshold=None).fit(styles)
     predictlabel = result.labels_
-    print("Completed clustering")
+    print("-->Completed clustering")
     
     with open(args.out, mode='w') as f:
         for i in range (len(set(predictlabel))):
@@ -157,6 +157,7 @@ if __name__ == "__main__":
             index=[j for j, x in enumerate(predictlabel) if x == i]
             for k in index:
                 f.write(str(k)+"\n")
+    print("-->Completed outputting binning result:", str(args.out))
     
     # label encode
     from sklearn.preprocessing import LabelEncoder
