@@ -20,7 +20,6 @@ if __name__ == "__main__":
     device = "cuda" if torch.cuda.is_available() else "cpu"
     device = torch.device(device)
     
-    # abc
     # read trainingdata
     if args.verbose > 1:
         print("Reading training data...")
