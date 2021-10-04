@@ -13,9 +13,11 @@ if __name__ == "__main__":
     parser.add_argument("-r", "--rate", help="learning rate", type=float, default=0.001)
     parser.add_argument("-d", "--dir", help="directory that contains fasta files for training", default="./trainingdata_139")
     parser.add_argument("-c", "--contig", help="directory that contains fasta files of contigs", default="./test")
-    parser.add_argument("-o", "--out", help="directory that outputs the binning result", default="./out")
+    parser.add_argument("-o", "--out", help="directory that outputs the binning result", default="./binnigresult.txt")
     parser.add_argument("-v", "--verbose", help="2 when training the model, 0 when using the weights provided", type=int, default=0)
     parser.add_argument("-m", "--model", help="path of saved model", default="./weight/modelweight.weight")
+    parser.add_argument("-n", "--numofbin", help="num of bins", default=60)
+    
     
     args = parser.parse_args()
     
@@ -137,20 +139,30 @@ if __name__ == "__main__":
         print("\rCalculating... {:0=3}".format(i+1), end="")
         style = calculate_style(torch.tensor(seqs_test).unsqueeze(0).float().to(device))
         styles.append(style)
-        
+    print("Completed calculating style matrices")
+    
+    # Agglomerative Clustering
+    print("Clustering...")
+    from sklearn.cluster import AgglomerativeClustering
+    result = AgglomerativeClustering(affinity='euclidean',
+                                     linkage='ward',
+                                     n_clusters=args.numofbin,
+                                     distance_threshold=None).fit(styles)
+    predictlabel = result.labels_
+    print("Completed clustering")
+    
+    with open(args.out, mode='w') as f:
+    for i in range (len(set(predictlabel))):
+        f.write(">bin_"+str(i)+"\n")
+        index=[j for j, x in enumerate(predictlabel) if x == i]
+        for k in index:
+            f.write(str(k)+"\n")
+    
     # label encode
     from sklearn.preprocessing import LabelEncoder
     le = LabelEncoder()
     le = le.fit(labels_test)
     truelabel = le.transform(labels_test)
-    
-    # Agglomerative Clustering
-    from sklearn.cluster import AgglomerativeClustering
-    result = AgglomerativeClustering(affinity='euclidean',
-                                     linkage='ward',
-                                     n_clusters=np.unique(truelabel).shape,
-                                     distance_threshold=None).fit(styles)
-    predictlabel = result.labels_ 
     
     # evaluate clustering accuracy
     from sklearn.metrics.cluster import adjusted_rand_score,homogeneity_score,completeness_score
