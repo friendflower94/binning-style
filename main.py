@@ -24,6 +24,7 @@ if __name__ == "__main__":
     def train(model, device, loader, optimizer, epoch):
         model.train()
         data_size = len(loader)
+        print(data_size)
         start = time.time()
         for batch_idx, (X, y) in enumerate(loader):
             X, y = X.to(device), y.to(device)
@@ -41,6 +42,7 @@ if __name__ == "__main__":
         model.eval()
         val_loss = 0
         true = 0
+        
         data_size = len(loader) * loader.batch_size
         with torch.no_grad():
             for X, y in loader:
