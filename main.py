@@ -101,8 +101,8 @@ if __name__ == "__main__":
         
         train_loader = DataLoader(length=1024,batch_size=12,n_batches=50)
         train_loader(labels_en, seqs, labels)
-        
-    
+        print(len(train_loader))
+
         # train model
         if args.verbose > 1: print("\nTraining model...")
         model = Discriminator(1024, len(labels)).float().to(device)
