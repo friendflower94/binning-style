@@ -1,6 +1,7 @@
 import argparse
 import torch
-import torch.optim as optim
+import torch.optim as optimi
+import torch.nn.functional as F
 import numpy as np
 import time
 from sklearn.preprocessing import LabelEncoder
