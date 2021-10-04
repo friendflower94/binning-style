@@ -46,7 +46,7 @@ def read_all(dir):
     for file in files:
         maxseqlen = 0
         for i, record in enumerate(SeqIO.parse(file, "fasta")): 
-            print("\rLoading... {:0=3}/{:0=3}".format(num+1, len(SeqIO.parse(file, "fasta")), end="")
+            print("\rLoading... {:0=3}/{:0=3}".format(num+1, len(SeqIO.parse(file, "fasta"))), end="")
             seqlength = len(str(record.seq))
             if maxseqlen < seqlength:
                 seq = to_tensor(str(record.seq))
