@@ -43,7 +43,7 @@ def read_one(path):
 def read_all(dir):
     seqs = []
     labels = []
-    files = glob.glob(path+"/*.fna")
+    files = glob.glob(dir+"/*.fna")
     for file in files:
         maxseqlen = 0
         for i, record in enumerate(SeqIO.parse(file, "fasta")): 
