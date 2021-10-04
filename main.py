@@ -19,9 +19,6 @@ if __name__ == "__main__":
     
     args = parser.parse_args()
     
-    device = "cuda" if torch.cuda.is_available() else "cpu"
-    device = torch.device(device)
-    
     def train(model, device, loader, optimizer, epoch):
         model.train()
         data_size = len(loader)
@@ -68,6 +65,9 @@ if __name__ == "__main__":
         print("\nTest set: Average loss: {:.4f}, Accuracy: {:.0f}%".format(val_loss, true*100))
         
         return val_loss
+    
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    device = torch.device(device)
     
     # read trainingdata
     if args.verbose > 1:
