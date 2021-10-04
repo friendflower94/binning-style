@@ -17,14 +17,11 @@ if __name__ == "__main__":
     parser.add_argument("-v", "--verbose", help="2 when training the model, 0 when using the weights provided", type=int, default=0)
     parser.add_argument("-m", "--model", help="path of saved model", default="./weight/modelweight.weight")
     parser.add_argument("-n", "--numofbin", help="num of bins", default=60)
-    
-    
     args = parser.parse_args()
     
     def train(model, device, loader, optimizer, epoch):
         model.train()
         data_size = len(loader)
-        
         start = time.time()
         for batch_idx, (X, y) in enumerate(loader):
             X, y = X.to(device), y.to(device)
@@ -33,87 +30,41 @@ if __name__ == "__main__":
             loss = F.nll_loss(out, y)
             loss.backward()
             optimizer.step()
-            
             print("\rTrain Epoch: {} [ {:0=5}/{:0=5} ({:.0f}%)]\t Loss: {:.4f}".format(epoch,
             batch_idx+1, data_size, (batch_idx + 1) * 100. / data_size, loss.item()), end="")
-            
         end = time.time()
-        
         print("\tThis took {:.3f} seconds".format(end-start), end="")
         
     def test(model, device, loader):
         model.eval()
-        
         val_loss = 0
         true = 0
         data_size = len(loader) * loader.batch_size
-        
         with torch.no_grad():
             for X, y in loader:
                 X, y = X.to(device), y.to(device)
                 out = model(X)
-
                 val_loss += F.nll_loss(out, y, reduction="sum").item()
                 y_pred = out.argmax(dim=1, keepdim=True)
                 true += y_pred.eq(y.view_as(y_pred)).sum().item()
-                
         val_loss /= data_size
         true /= data_size
-        
         val_losses.append(val_loss)
         accuracy.append(true)
-        
         print("\nTest set: Average loss: {:.4f}, Accuracy: {:.0f}%".format(val_loss, true*100))
-        
         return val_loss
     
     device = "cuda" if torch.cuda.is_available() else "cpu"
     device = torch.device(device)
     
-    
-    # read trainingdata
-    if args.verbose > 1:
-        print("Reading training data...")
-        species, seqs, labels = read_all(args.dir)
-        train_loader = DataLoader(length=1024,batch_size=128,n_batches=1000)
-        train_loader(species, seqs, labels)
-    
-        # train model
-        if args.verbose > 1: print("\nTraining model...")
-    
-        model = Discriminator(1024, len(species)).double().to(device)
-        optimizer = optim.Adam(model.parameters(), lr=args.rate)
-
-        for epoch in range(args.epoch):
-            train(model, device, train_loader, optimizer, epoch+1)
-            #val_loss = test(model, device, test_loader)
-            print("")
-    
-    if args.verbose < 1:
-        print("Loading trained model:", str(args.model))
-        model = Discriminator(1024, 139).float().to(device)
-        if device =="cuda":
-            model.load_state_dict(torch.load(args.model))
-        else:
-            model.load_state_dict(torch.load(args.model, map_location=torch.device('cpu')))
-        print("-->Completed loading trained model")
-        #x = torch.ones(1, 4,1024).double().to(device)
-        #x = Variable(x, requires_grad=True)
-    
-    
-    # read testdata
-    seqs_test, labels_test = read_contig(args.contig)
-    print("\n-->Completed loading testdata")
-    print("-->num of contig:", len(labels_test))
-    
-    ## calculate style matrix
+    # calculate style matrix
     def stylematrix(seq):
         style = model.cuda().get_style(seq,args.layer)
         style = style.cpu().detach().squeeze().numpy()
         style = style[np.triu_indices(style.shape[0])]
         return style
     
-    ## calculate style
+    # calculate style
     def calculate_style(seq):
         length = seq.shape[-1]
         
@@ -132,8 +83,41 @@ if __name__ == "__main__":
             seq = F.pad(seq,(0,1024-length))
             style = stylematrix(seq)
         return style
+ 
+    # 1-1)trainig model
+    if args.verbose > 1:
+        # read trainingdata
+        print("Reading training data...")
+        species, seqs, labels = read_all(args.dir)
+        train_loader = DataLoader(length=1024,batch_size=128,n_batches=1000)
+        train_loader(species, seqs, labels)
     
-    # calculate style matrices    
+        # train model
+        if args.verbose > 1: print("\nTraining model...")
+        model = Discriminator(1024, len(species)).double().to(device)
+        optimizer = optim.Adam(model.parameters(), lr=args.rate)
+
+        for epoch in range(args.epoch):
+            train(model, device, train_loader, optimizer, epoch+1)
+            #val_loss = test(model, device, test_loader)
+            print("")
+            
+    # 1-2)using trained model
+    if args.verbose < 1:
+        print("Loading trained model:", str(args.model))
+        model = Discriminator(1024, 139).float().to(device)
+        if device =="cuda":
+            model.load_state_dict(torch.load(args.model))
+        else:
+            model.load_state_dict(torch.load(args.model, map_location=torch.device('cpu')))
+        print("-->Completed loading trained model")
+    
+    # 2)read testdata
+    seqs_test, labels_test = read_contig(args.contig)
+    print("\n-->Completed loading testdata")
+    print("-->num of contig:", len(labels_test))
+    
+    # 3)calculate style matrices    
     styles = []
     for i in range(len(seqs_test)):
         print("\rCalculating style matrix... {:0=3}/{:0=3}".format(i+1, len(seqs_test)), end="")
@@ -141,7 +125,7 @@ if __name__ == "__main__":
         styles.append(style)
     print("\n-->Completed calculating style matrix")
     
-    # Agglomerative Clustering
+    # 4)Agglomerative Clustering
     print("Clustering...")
     from sklearn.cluster import AgglomerativeClustering
     result = AgglomerativeClustering(affinity='euclidean',
@@ -151,6 +135,7 @@ if __name__ == "__main__":
     predictlabel = result.labels_
     print("-->Completed clustering")
     
+    # 5)output result
     with open(args.out, mode='w') as f:
         for i in range (len(set(predictlabel))):
             f.write(">bin_"+str(i)+"\n")
