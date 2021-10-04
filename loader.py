@@ -11,7 +11,7 @@ def to_tensor(seq):
     idx = list(map(lambda b: base.index(b), seq))
     idx = np.array(idx)
     seq = np.eye(5, 4)[idx].T
-    return seq
+    return tf.constant(seq)
 
 
 def sanitize(seq):
