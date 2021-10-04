@@ -122,11 +122,8 @@ class DataLoader():
         if self._i >= self.n_batches:
             self._i = 0
             raise StopIteration()
-
         self._i += 1
-
         X_batch, y_batch = self.get_batch()
-
         return X_batch, y_batch
 
     def __len__(self):
@@ -141,9 +138,7 @@ class DataLoader():
 
             for index, length in zip(indexes, lens):
                 start = np.random.randint(length - self.length)
-                #X_batch.append(self.seqs[index][:,start:start+self.length])
                 X_batch.append(self.seqs[index][:,:,start:start+self.length])
-                
 
             return torch.cat(X_batch), self.labels[indexes]
 
@@ -172,60 +167,3 @@ class DataLoader():
             X_batch.append(self.seqs[index][:,:,start:start+self.length])
 
         return torch.cat(X_batch)
-"""
-class DataLoader():
-    def __init__(self, batch_size, how="random", length=1024, is_train=True, use_all=False, test_size=0.3, n_batch=1000):
-        self.is_train = is_train
-        self.batch_size = batch_size
-        self.how = how
-        self.n_batch = n_batch
-        self._i = 0
-        self.length = length
-        self.use_all = use_all
-        self.test_size = test_size
-        
-    def __call__(self, species, seqs, labels):
-        self.species, self.seqs, self.labels = species, seqs, labels
-        self.lens = np.array([len(x) for x in seqs])
-        self.bounds = self.lens if self.use_all else np.array([int(len(x) * self.test_size) for x in self.seqs])
-        
-    def __iter__(self):
-        return self
-    
-    def __next__(self):
-        if self._i >= self.n_batch:
-            self._i = 0
-            raise StopIteration()
-            
-        self._i += 1
-        
-        X_batch, y_batch = self.get_batch()
-        X_batch = torch.tensor(X_batch)
-        y_batch = torch.tensor(y_batch).long()
-        
-        return X_batch, y_batch
-    
-    def __len__(self):
-        return self.n_batch
-    
-    def get_batch(self):
-        if self.how=="random":
-            idx = np.random.randint(len(self.bounds), size=self.batch_size)
-            
-            def crop(label, is_train):
-                seq = None
-                label = label[0]
-                
-                if is_train:
-                    start = np.random.randint(self.bounds[label]-self.length)
-                else:
-                    start = np.random.randint(self.bounds[label], self.lens[label]-self.length)
-                    
-                return self.seqs[label][start:start+self.length].T
-            
-            return np.apply_along_axis(crop, 1, idx.reshape(-1, 1), self.is_train), self.labels[idx]
-        
-    def get_one(self, ind):
-        start = np.random.randint(self.lens[ind]-self.length)
-        return torch.tensor(self.seqs[ind][start:start+self.length].T).unsqueeze(0)
-"""
