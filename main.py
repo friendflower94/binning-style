@@ -100,7 +100,7 @@ if __name__ == "__main__":
         print("-->num of training data:", len(labels))
         
         train_loader = DataLoader(length=1024,batch_size=12,n_batches=50)
-        train_loader(labels, seqs, labels_en)
+        train_loader(labels_en, seqs, labels)
         
     
         # train model
