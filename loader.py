@@ -33,27 +33,21 @@ def sanitize(seq):
 def read_one(path):
     seq = None
     name = ""
-    
     for record in SeqIO.parse(path, "fasta"):
         seq = to_tensor(str(record.seq))
         seqs.append(seq)
-        labels.append(record.description)
-        
-    return name, seq
+        label = str(path)
+    return label, seq
 
 def read_all(dir):
-    species = []
     seqs = []
-    labels = np.array([])
-    
+    label = []
     for i, filename in enumerate(os.listdir(dir)):
         print("\rLoading... {:0=3}/{:0=3}".format(i+1, len(os.listdir(dir))), end="")
-        name, seq = read_one(dir+"/"+filename)
-        species.append(name)
+        label, seq = read_one(dir+"/"+filename)
         seqs.append(seq)
-        labels = np.append(labels, i)
-        
-    return species, seqs, labels
+        labels.append(label)
+    return seqs, labels
 
 def read_contig(dir):
     labels = []
