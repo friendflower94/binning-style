@@ -97,7 +97,7 @@ if __name__ == "__main__":
         # read trainingdata
         print("Reading training data...")
         seqs, labels = read_all(args.dir)
-        for i in range len(seqs):
+        for i in range (len(seqs)):
             seqs[i] = torch.tensor(seqs[i]).unsqueeze(0).float()
         le = LabelEncoder()
         le = le.fit(labels)
