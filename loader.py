@@ -35,13 +35,9 @@ def read_one(path):
     name = ""
     
     for record in SeqIO.parse(path, "fasta"):
-        # only complete genome
-        
-        seq_ = sanitize(record.seq)
-        idx = list(map(lambda b: base.index(b), seq_))
-        idx = np.array(idx)
-        seq = np.eye(5, 4)[idx]
-        name = record.name
+        seq = to_tensor(str(record.seq))
+        seqs.append(seq)
+        labels.append(record.description)
         
     return name, seq
 
@@ -51,7 +47,6 @@ def read_all(dir):
     labels = np.array([])
     
     for i, filename in enumerate(os.listdir(dir)):
-
         print("\rLoading... {:0=3}/{:0=3}".format(i+1, len(os.listdir(dir))), end="")
         name, seq = read_one(dir+"/"+filename)
         species.append(name)
