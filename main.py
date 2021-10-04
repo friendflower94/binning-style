@@ -3,7 +3,7 @@ import torch
 import torch.optim as optim
 import numpy as np
 from model import Discriminator
-from loader import DataLoader, read_all, to_tensor
+from loader import DataLoader, read_all, to_tensor, read_contig
 from Bio import SeqIO
 
 if __name__ == "__main__":
@@ -99,7 +99,7 @@ if __name__ == "__main__":
     
     
     # read testdata
-    species_test, seqs_test, labels_test = read_all(args.contig)
+    species_test, seqs_test, labels_test = read_contig(args.contig)
     
     ## calculate style matrix
     def stylematrix(seq):
