@@ -46,7 +46,7 @@ def read_all(dir):
     files = glob.glob(dir+"/*.fna")
     num=0
     for file in files:
-        print("\rLoading... {:0=3}/{:0=3}".format(num+1, len(files), end="")
+        print("\rLoading... {:0=3}/{:0=3}".format(num+1, len(files)), end="")
         maxseqlen = 0
         for i, record in enumerate(SeqIO.parse(file, "fasta")): 
             
