@@ -2,7 +2,7 @@ import argparse
 import torch
 import torch.optim as optim
 import numpy as np
-from model import Discriminator, train, test
+from model import Discriminator
 from loader import DataLoader, read_all, to_tensor
 from Bio import SeqIO
 
@@ -20,14 +20,59 @@ if __name__ == "__main__":
     device = "cuda" if torch.cuda.is_available() else "cpu"
     device = torch.device(device)
     
+    def train(model, device, loader, optimizer, epoch):
+        model.train()
+        data_size = len(loader)
+        
+        start = time.time()
+        for batch_idx, (X, y) in enumerate(loader):
+            X, y = X.to(device), y.to(device)
+            optimizer.zero_grad()
+            out = model(X)
+            loss = F.nll_loss(out, y)
+            loss.backward()
+            optimizer.step()
+            
+            print("\rTrain Epoch: {} [ {:0=5}/{:0=5} ({:.0f}%)]\t Loss: {:.4f}".format(epoch,
+                batch_idx+1, data_size, (batch_idx + 1) * 100. / data_size, loss.item()
+            ), end="")
+            
+        end = time.time()
+        
+        print("\tThis took {:.3f} seconds".format(end-start), end="")
+        
+    def test(model, device, loader):
+        model.eval()
+        
+        val_loss = 0
+        true = 0
+        data_size = len(loader) * loader.batch_size
+        
+        with torch.no_grad():
+            for X, y in loader:
+                X, y = X.to(device), y.to(device)
+                out = model(X)
+
+                val_loss += F.nll_loss(out, y, reduction="sum").item()
+                y_pred = out.argmax(dim=1, keepdim=True)
+                true += y_pred.eq(y.view_as(y_pred)).sum().item()
+                
+        val_loss /= data_size
+        true /= data_size
+        
+        val_losses.append(val_loss)
+        accuracy.append(true)
+        
+        print("\nTest set: Average loss: {:.4f}, Accuracy: {:.0f}%".format(val_loss, true*100))
+        
+        return val_loss
+    
     # read trainingdata
     if args.verbose > 1:
         print("Reading training data...")
         species, seqs, labels = read_all(args.dir)
         train_loader = DataLoader(length=1024,batch_size=128,n_batches=1000)
-        test_loader = DataLoader(length=1024,batch_size=128, n_batches=1000)
         train_loader(species, seqs, labels)
-        test_loader(species, seqs, labels)
     
         # train model
         if args.verbose > 1: print("\nTraining model...")
@@ -36,8 +81,8 @@ if __name__ == "__main__":
         optimizer = optim.Adam(model.parameters(), lr=args.rate)
 
         for epoch in range(args.epoch):
-            train(model, device, loader, optimizer, epoch+1)
-            val_loss = test(model, device, test_loader)
+            train(model, device, train_loader, optimizer, epoch+1)
+            #val_loss = test(model, device, test_loader)
             print("")
     
     if args.verbose < 1:
