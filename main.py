@@ -6,8 +6,8 @@ import numpy as np
 import time
 from sklearn.preprocessing import LabelEncoder
 from model import Discriminator
-from loader import read_all, read_contig, to_tensor
-from data_loader2 import DataLoader
+from loader import DataLoader,read_all, read_contig, to_tensor
+#from data_loader2 import DataLoader
 from Bio import SeqIO
 
 if __name__ == "__main__":
