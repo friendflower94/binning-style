@@ -5,13 +5,13 @@ import re
 import os
 base = ["A", "T", "G", "C", "N"]
 
-def to_tensor(string):
-    seq = sanitize(string)
+def to_tensor(seq):
+    seq = sanitize(seq)
     idx = list(map(lambda b: base.index(b), seq))
     idx = np.array(idx)
     seq = np.eye(5, 4)[idx].T
-    
-    return torch.tensor(seq).unsqueeze(0)
+
+    return torch.tensor(seq).unsqueeze(0).float().to(device)
 
 def sanitize(seq):
     seq = re.sub(r"R", ["A", "G"][np.random.randint(2)], seq)
