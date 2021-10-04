@@ -3,7 +3,7 @@ import torch
 import torch.optim as optim
 import numpy as np
 from model import Discriminator
-from loader import DataLoader, read_all, read_contig
+from loader import DataLoader, read_all, read_contig, to_tensor
 from Bio import SeqIO
 
 if __name__ == "__main__":
@@ -65,14 +65,6 @@ if __name__ == "__main__":
         print("\nTest set: Average loss: {:.4f}, Accuracy: {:.0f}%".format(val_loss, true*100))
         
         return val_loss
-    
-    def to_tensor(seq):
-        seq = sanitize(seq)
-        idx = list(map(lambda b: base.index(b), seq))
-        idx = np.array(idx)
-        seq = np.eye(5, 4)[idx].T
-        return torch.tensor(seq).unsqueeze(0).float().to(device)
-
     
     device = "cuda" if torch.cuda.is_available() else "cpu"
     device = torch.device(device)
