@@ -7,7 +7,6 @@ import time
 from sklearn.preprocessing import LabelEncoder
 from model import Discriminator
 from loader import DataLoader,read_all, read_contig, to_tensor
-#from data_loader2 import DataLoader
 from Bio import SeqIO
 
 if __name__ == "__main__":
@@ -153,8 +152,11 @@ if __name__ == "__main__":
                                      distance_threshold=None).fit(styles)
     predictlabel = result.labels_
     print("-->Completed clustering")
+    print("-->num of bins generated:", args.numofbin)
+    
     
     # 5)output result
+    print("Outputting...")
     with open(args.out, mode='w') as f:
         for i in range (len(set(predictlabel))):
             f.write(">bin_"+str(i)+"\n")
