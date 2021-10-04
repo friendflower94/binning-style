@@ -103,7 +103,7 @@ if __name__ == "__main__":
     
     # read testdata
     seqs_test, labels_test = read_contig(args.contig)
-    print("Completed loading testdata")
+    print("\nCompleted loading testdata")
     print("num of contig:", len(labels_test))
     
     ## calculate style matrix
@@ -136,13 +136,13 @@ if __name__ == "__main__":
     # calculate style matrices    
     styles = []
     for i in range(len(seqs_test)):
-        print("\rCalculating... {:0=3}".format(i+1), end="")
+        print("\rCalculating style matrix... {:0=3}/{:0=3}".format(i+1, len(seqs_test), end="")
         style = calculate_style(torch.tensor(seqs_test[i]).unsqueeze(0).float().to(device))
         styles.append(style)
-    print("Completed calculating style matrices")
+    print("Completed calculating style matrix")
     
     # Agglomerative Clustering
-    print("Clustering...")
+    print("\nClustering...")
     from sklearn.cluster import AgglomerativeClustering
     result = AgglomerativeClustering(affinity='euclidean',
                                      linkage='ward',
