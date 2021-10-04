@@ -56,6 +56,18 @@ def read_all(dir):
         
     return species, seqs, labels
 
+def read_contig(path):
+    labels = []
+    seqs = []
+    
+    for record in SeqIO.parse(path, "fasta"): 
+        print("\rLoading... {:0=3}".format(num+1), end="")
+        seq = to_tensor(str(record.seq))
+        seqs.append(seq)
+        labels.append(record.description)
+
+    return seqs, labels
+
 class DataLoader():
     def __init__(self, batch_size, how="random", length=1024, is_train=True, use_all=False, test_size=0.3, n_batch=1000):
         self.is_train = is_train
