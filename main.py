@@ -130,9 +130,9 @@ if __name__ == "__main__":
     
     # calculate style matrices    
     styles = []
-    for i in range(len(seqs)):
+    for i in range(len(seqs_test)):
         print("\rCalculating... {:0=3}".format(i+1), end="")
-        style = calculate_style(seqs[i])
+        style = calculate_style(torch.tensor(seqs_test).unsqueeze(0).float().to(device))
         styles.append(style)
         
     # label encode
