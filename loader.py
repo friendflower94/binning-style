@@ -46,9 +46,10 @@ def read_all(dir):
     files = glob.glob(dir+"/*.fna")
     num=0
     for file in files:
+        print("\rLoading... {:0=3}/{:0=3}".format(num+1, len(files), end="")
         maxseqlen = 0
         for i, record in enumerate(SeqIO.parse(file, "fasta")): 
-            print("\rLoading... {:0=3}/{:0=3}".format(num+1, len(SeqIO.parse(file, "fasta"))), end="")
+            
             seqlength = len(str(record.seq))
             if maxseqlen < seqlength:
                 seq = to_tensor(str(record.seq))
@@ -56,7 +57,7 @@ def read_all(dir):
                 #g = taxa.split(" ")[1]
                 #s = taxa.split(" ")[2]
                 maxseqlen = seqlength
-            num = num +1
+        num = num +1
         seqs.append(seq)
         labels.append(taxa)
         #species.append(s)
