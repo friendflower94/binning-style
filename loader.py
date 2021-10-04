@@ -112,7 +112,7 @@ class DataLoader():
         
     def __call__(self, species, seqs, labels):
         self.species, self.seqs, self.labels = species, seqs, labels
-        self.lens = np.array([seq.size()[1] for seq in seqs])
+        self.lens = np.array([seq.shape[2] for seq in seqs])
         
     def __iter__(self):
         return self
