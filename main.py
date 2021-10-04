@@ -15,8 +15,8 @@ if __name__ == "__main__":
     parser.add_argument("-d", "--dir", help="directory that contains fasta files for training", default="./trainingdata_139")
     parser.add_argument("-c", "--contig", help="directory that contains fasta files of contigs", default="./test")
     parser.add_argument("-o", "--out", help="directory that outputs the binning result", default="./binnigresult.txt")
-    parser.add_argument("-v", "--verbose", help="2 when training the model, 0 when using the weights provided", type=int, default=0)
-    parser.add_argument("-m", "--model", help="path of saved model", default="./weight/modelweight.weight")
+    parser.add_argument("-v", "--verbose", help="2 when training the model, 0 when using the saved model", type=int, default=0)
+    parser.add_argument("-m", "--model", help="path of the saved model", default="./weight/modelweight.weight")
     parser.add_argument("-n", "--numofbin", help="num of bins", default=60)
     args = parser.parse_args()
     
