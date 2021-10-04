@@ -35,7 +35,7 @@ def read_one(path):
     name = ""
     for record in SeqIO.parse(path, "fasta"):
         seq = to_tensor(str(record.seq))
-        seqs.append(seq)
+        
         label = str(path)
     return label, seq
 
@@ -44,9 +44,10 @@ def read_all(dir):
     label = []
     for i, filename in enumerate(os.listdir(dir)):
         print("\rLoading... {:0=3}/{:0=3}".format(i+1, len(os.listdir(dir))), end="")
-        label, seq = read_one(dir+"/"+filename)
-        seqs.append(seq)
-        labels.append(label)
+        for record in SeqIO.parse(dir+"/"+filename, "fasta"):
+            seq = to_tensor(str(record.seq))
+            seqs.append(seq)
+            labels.append(label)
     return seqs, labels
 
 def read_contig(dir):
