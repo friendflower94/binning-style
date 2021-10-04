@@ -17,6 +17,8 @@ if __name__ == "__main__":
     parser.add_argument("-v", "--verbose", help="2 when training the model, 0 when using the weights provided", type=int, default=0)
     parser.add_argument("--weight", "-w", help="model's weight file", default="--model=./weight/modelweight.weight")
     
+    args = parser.parse_args()
+    
     device = "cuda" if torch.cuda.is_available() else "cpu"
     device = torch.device(device)
     
