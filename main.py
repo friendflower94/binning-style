@@ -15,7 +15,7 @@ if __name__ == "__main__":
     parser.add_argument("-c", "--contig", help="directory that contains fasta files of contigs", default="./test")
     parser.add_argument("-o", "--out", help="directory that outputs the binning result", default="./out")
     parser.add_argument("-v", "--verbose", help="2 when training the model, 0 when using the weights provided", type=int, default=0)
-    parser.add_argument("--weight", "-w", help="model's weight file", default="--model=./weight/modelweight.weight")
+    parser.add_argument("-m", "--model", help="path of saved model", default="./weight/modelweight.weight")
     
     args = parser.parse_args()
     
@@ -89,7 +89,7 @@ if __name__ == "__main__":
     
     if args.verbose < 1:
         model = Discriminator(1024, 139).float().to(device)
-        model.load_state_dict(torch.load(args.weight))
+        model.load_state_dict(torch.load(args.model))
         x = torch.ones(1, 4,1024).double().to(device)
         x = Variable(x, requires_grad=True)
     
