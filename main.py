@@ -13,7 +13,7 @@ from Bio import SeqIO
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-l", "--layer", help="layer for calculating style matrices", type=int, default=4)
-    parser.add_argument("-e", "--epoch", help="epoch for training a model", type=int, default=100)
+    parser.add_argument("-e", "--epoch", help="epoch for training a model", type=int, default=10)
     parser.add_argument("-r", "--rate", help="learning rate", type=float, default=0.001)
     parser.add_argument("-d", "--dir", help="directory that contains fasta files for training", default="./trainingdata_139")
     parser.add_argument("-c", "--contig", help="directory that contains fasta files of contigs", default="./test")
