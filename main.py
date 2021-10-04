@@ -136,7 +136,7 @@ if __name__ == "__main__":
     # calculate style matrices    
     styles = []
     for i in range(len(seqs_test)):
-        print("\rCalculating style matrix... {:0=3}/{:0=3}".format(i+1, len(seqs_test), end="")
+        print("\rCalculating style matrix... {:0=3}/{:0=3}".format(i+1, len(seqs_test)), end="")
         style = calculate_style(torch.tensor(seqs_test[i]).unsqueeze(0).float().to(device))
         styles.append(style)
     print("Completed calculating style matrix")
