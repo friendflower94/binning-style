@@ -41,7 +41,7 @@ def read_one(path):
 
 def read_all(dir):
     seqs = []
-    label = []
+    labels = []
     for i, filename in enumerate(os.listdir(dir)):
         print("\rLoading... {:0=3}/{:0=3}".format(i+1, len(os.listdir(dir))), end="")
         for record in SeqIO.parse(dir+"/"+filename, "fasta"):
