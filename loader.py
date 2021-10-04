@@ -46,6 +46,7 @@ def read_all(dir):
         print("\rLoading... {:0=3}/{:0=3}".format(i+1, len(os.listdir(dir))), end="")
         for record in SeqIO.parse(dir+"/"+filename, "fasta"):
             seq = to_tensor(str(record.seq))
+            label = str(filename).split(".")[0]
             seqs.append(seq)
             labels.append(label)
     return seqs, labels
