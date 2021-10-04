@@ -28,7 +28,9 @@ if __name__ == "__main__":
         print(data_size)
         start = time.time()
         for batch_idx, (X, y) in enumerate(loader):
-            X, y = X.to(device), y.to(device)
+            X = X.to(device)
+            y = torch.from_numpy(y).clone()
+            y = y.to(device)
             optimizer.zero_grad()
             out = model(X)
             loss = F.nll_loss(out, y)
