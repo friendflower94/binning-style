@@ -44,6 +44,7 @@ def read_all(dir):
     seqs = []
     labels = []
     files = glob.glob(dir+"/*.fna")
+    num=0
     for file in files:
         maxseqlen = 0
         for i, record in enumerate(SeqIO.parse(file, "fasta")): 
@@ -55,6 +56,7 @@ def read_all(dir):
                 #g = taxa.split(" ")[1]
                 #s = taxa.split(" ")[2]
                 maxseqlen = seqlength
+            num = num +1
         seqs.append(seq)
         labels.append(taxa)
         #species.append(s)
