@@ -103,7 +103,7 @@ if __name__ == "__main__":
         print(seqs[0])
         print(seqs[0].shape)
         train_loader = DataLoader(length=1024,batch_size=12,n_batches=100)
-        train_loader(labels_en, seqs, labels)
+        train_loader(labels_en, seqs, labels_en)
         print(len(train_loader))
 
         # train model
