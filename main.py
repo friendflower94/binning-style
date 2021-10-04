@@ -3,6 +3,7 @@ import torch
 import torch.optim as optim
 import numpy as np
 import time
+from sklearn.preprocessing import LabelEncoder
 from model import Discriminator
 from loader import DataLoader, read_all, read_contig, to_tensor
 from Bio import SeqIO
@@ -90,11 +91,15 @@ if __name__ == "__main__":
         # read trainingdata
         print("Reading training data...")
         seqs, labels = read_all(args.dir)
+        le = LabelEncoder()
+        le = le.fit(labels)
+        labels_en = le.transform(labels)
         print("-->Complete reading training data")
         print("-->num of training data:", len(labels))
         
         train_loader = DataLoader(length=1024,batch_size=12,n_batches=50)
-        train_loader(labels, seqs, labels)
+        train_loader(labels, seqs, labels_en)
+        
     
         # train model
         if args.verbose > 1: print("\nTraining model...")
