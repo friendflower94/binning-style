@@ -2,6 +2,7 @@ import argparse
 import torch
 import torch.optim as optim
 import numpy as np
+import time
 from model import Discriminator
 from loader import DataLoader, read_all, read_contig, to_tensor
 from Bio import SeqIO
