@@ -69,6 +69,7 @@ if __name__ == "__main__":
     device = "cuda" if torch.cuda.is_available() else "cpu"
     device = torch.device(device)
     
+    
     # read trainingdata
     if args.verbose > 1:
         print("Reading training data...")
@@ -89,7 +90,10 @@ if __name__ == "__main__":
     
     if args.verbose < 1:
         model = Discriminator(1024, 139).float().to(device)
-        model.load_state_dict(torch.load(args.model))
+        if device =="cuda":
+            model.load_state_dict(torch.load(args.model))
+        else:
+            model.load_state_dict(torch.load(args.model, map_location=torch.device('cpu')))
         x = torch.ones(1, 4,1024).double().to(device)
         x = Variable(x, requires_grad=True)
     
