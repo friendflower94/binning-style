@@ -32,8 +32,8 @@ if __name__ == "__main__":
             loss.backward()
             optimizer.step()
             
-            print("\rTrain Epoch: {} [ {:0=5}/{:0=5} ({:.0f}%)]\t Loss: {:.4f}".format(epoch,
-            batch_idx+1, data_size, (batch_idx + 1) * 100. / data_size, loss.item()), end="")
+            #print("\rTrain Epoch: {} [ {:0=5}/{:0=5} ({:.0f}%)]\t Loss: {:.4f}".format(epoch,
+            #batch_idx+1, data_size, (batch_idx + 1) * 100. / data_size, loss.item()), end="")
             
         end = time.time()
         
