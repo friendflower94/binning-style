@@ -89,7 +89,7 @@ if __name__ == "__main__":
         # read trainingdata
         print("Reading training data...")
         seqs, labels = read_all(args.dir)
-        train_loader = DataLoader(length=1024,batch_size=128,n_batches=1000)
+        train_loader = DataLoader(length=1024,batch_size=64,n_batches=100)
         train_loader(labels, seqs, labels)
     
         # train model
