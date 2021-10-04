@@ -19,11 +19,15 @@ def sanitize(seq):
     seq = re.sub(r"K", ["G", "T"][np.random.randint(2)], seq)
     seq = re.sub(r"S", ["G", "C"][np.random.randint(2)], seq)
     seq = re.sub(r"W", ["A", "T"][np.random.randint(2)], seq)
+    seq = re.sub(r"M", ["A", "C"][np.random.randint(2)], seq)
     seq = re.sub(r"B", ["T", "G", "C"][np.random.randint(3)], seq)
+    seq = re.sub(r"V", ["A", "G", "C"][np.random.randint(3)], seq)
     seq = re.sub(r"D", ["A", "G", "T"][np.random.randint(3)], seq)
     seq = re.sub(r"H", ["A", "C", "T"][np.random.randint(3)], seq)
-    seq = re.sub(r"M", ["A", "C"][np.random.randint(2)], seq)
-    
+    seq = re.sub(r"a", "A", seq)
+    seq = re.sub(r"t", "T", seq)
+    seq = re.sub(r"g", "G", seq)
+    seq = re.sub(r"c", "C", seq)
     return seq
 
 def read_one(path):
