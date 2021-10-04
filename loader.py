@@ -1,4 +1,5 @@
 from Bio import SeqIO
+import glob
 import numpy as np
 import torch
 import re
