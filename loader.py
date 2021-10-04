@@ -4,6 +4,7 @@ import numpy as np
 import torch
 import re
 import os
+import tensorflow as tf
 base = ["A", "T", "G", "C", "N"]
 
 def to_tensor(seq):
