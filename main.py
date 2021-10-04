@@ -12,7 +12,7 @@ from Bio import SeqIO
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-l", "--layer", help="layer for calculating style matrices", type=int, default=4)
-    parser.add_argument("-e", "--epoch", help="epoch for training a model", type=int, default=10)
+    parser.add_argument("-e", "--epoch", help="epoch for training a model", type=int, default=100)
     parser.add_argument("-r", "--rate", help="learning rate", type=float, default=0.001)
     parser.add_argument("-d", "--dir", help="directory that contains fasta files for training", default="./trainingdata_139")
     parser.add_argument("-c", "--contig", help="directory that contains fasta files of contigs", default="./test")
@@ -106,7 +106,7 @@ if __name__ == "__main__":
         print(labels[0])
         print(seqs[0])
         print(seqs[0].shape)
-        train_loader = DataLoader(length=1024,batch_size=12,n_batches=100)
+        train_loader = DataLoader(length=1024,batch_size=64,n_batches=1000)
         train_loader(labels_en, seqs, labels_en)
         print(len(train_loader))
 
