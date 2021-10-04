@@ -89,6 +89,10 @@ if __name__ == "__main__":
         # read trainingdata
         print("Reading training data...")
         seqs, labels = read_all(args.dir)
+        print("-->Complete reading training data")
+        print("-->num of training data:", len(labels))
+        
+        
         train_loader = DataLoader(length=1024,batch_size=64,n_batches=100)
         train_loader(labels, seqs, labels)
     
