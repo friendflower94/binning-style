@@ -4,7 +4,6 @@ import numpy as np
 import torch
 import re
 import os
-import tensorflow as tf
 base = ["A", "T", "G", "C", "N"]
 
 def to_tensor(seq):
@@ -12,7 +11,7 @@ def to_tensor(seq):
     idx = list(map(lambda b: base.index(b), seq))
     idx = np.array(idx)
     seq = np.eye(5, 4)[idx].T
-    return tf.constant(seq)
+    return torch.tensor(seq).unsqueeze(0).float()
 
 
 def sanitize(seq):
