@@ -99,7 +99,7 @@ if __name__ == "__main__":
     
     
     # read testdata
-    species_test, seqs_test, labels_test = read_contig(args.contig)
+    seqs_test, labels_test = read_contig(args.contig)
     
     ## calculate style matrix
     def stylematrix(seq):
