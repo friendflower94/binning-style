@@ -65,7 +65,7 @@ def read_contig(dir):
     seqs = []
     
     for i, filename in enumerate(os.listdir(dir)):
-        for record in SeqIO.parse(filename, "fasta"): 
+        for record in SeqIO.parse(dir+"/"+filename, "fasta"): 
             print("\rLoading... {:0=3}".format(num+1), end="")
             seq = to_tensor(str(record.seq))
             seqs.append(seq)
