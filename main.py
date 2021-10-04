@@ -93,12 +93,15 @@ if __name__ == "__main__":
             model.load_state_dict(torch.load(args.model))
         else:
             model.load_state_dict(torch.load(args.model, map_location=torch.device('cpu')))
+        print("Loading trained model...")
         #x = torch.ones(1, 4,1024).double().to(device)
         #x = Variable(x, requires_grad=True)
     
     
     # read testdata
     seqs_test, labels_test = read_contig(args.contig)
+    print("Completed loading testdata")
+    print("num of contig:", len(labels_test))
     
     ## calculate style matrix
     def stylematrix(seq):
