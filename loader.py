@@ -60,15 +60,16 @@ def read_all(dir):
         
     return species, seqs, labels
 
-def read_contig(path):
+def read_contig(dir):
     labels = []
     seqs = []
     
-    for record in SeqIO.parse(path, "fasta"): 
-        print("\rLoading... {:0=3}".format(num+1), end="")
-        seq = to_tensor(str(record.seq))
-        seqs.append(seq)
-        labels.append(record.description)
+    for i, filename in enumerate(os.listdir(dir)):
+        for record in SeqIO.parse(filename, "fasta"): 
+            print("\rLoading... {:0=3}".format(num+1), end="")
+            seq = to_tensor(str(record.seq))
+            seqs.append(seq)
+            labels.append(record.description)
 
     return seqs, labels
 
