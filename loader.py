@@ -140,7 +140,9 @@ class DataLoader():
 
             for index, length in zip(indexes, lens):
                 start = np.random.randint(length - self.length)
-                X_batch.append(self.seqs[index][:,:,start:start+self.length])
+                X_batch.append(self.seqs[index][:,start:start+self.length])
+                #X_batch.append(self.seqs[index][:,:,start:start+self.length])
+                
 
             return torch.cat(X_batch), self.labels[indexes]
 
