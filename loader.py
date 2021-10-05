@@ -64,32 +64,7 @@ def read_all(dir):
         #species.append(s)
         #seqlen.append(maxseqlen)
     return seqs, labels
-""" 
-    for i, record in enumerate(SeqIO.parse(file, "fasta")): 
-        maxseqlen=0
-        print("\rLoading... {:0=3}/{:0=3}".format(i+1, len(os.listdir(dir))), end="")
-        seqlength = len(str(record.seq))
-        if maxseqlen < seqlength:
-            seq = to_tensor(str(record.seq))
-            seqstr = to_tensor(str(record.seq))
-            taxa = record.description
-            #g = taxa.split(" ")[1]
-            #s = taxa.split(" ")[2]
-            maxseqlen = seqlength
-        num = num +1
-        seqs.append(seq)
-        seqstrs.append(seq)
-        taxa.append(taxa)
-    for i, filename in enumerate(os.listdir(dir)):
-        
-        print("\rLoading... {:0=3}/{:0=3}".format(i+1, len(os.listdir(dir))), end="")
-        for record in SeqIO.parse(dir+"/"+filename, "fasta"):
-            seq = to_tensor(str(record.seq))
-            label = str(filename).split(".")[0]
-            seqs.append(seq)
-            labels.append(label)
-    return seqs, labels
-"""
+
 def read_contig(dir):
     labels = []
     seqs = []
