@@ -12,24 +12,44 @@ You can divide the DNA sequences into bins according to the genomic features of 
 
 ## Usage
 
-Regarding model learning, you have two options:  
-1.use the trained model  
-2.train the model
+
 
 First, the points common to both patterns are shown below.
-* --contig `<CONTIG>`  
-Where contigs are located. Sequence data must be in fasta format.  
-default:  
+  
 * --layer `<LAYER>`  
 Style matrices are calculated in `<LAYER>` of the model.  
 default:4  
-* --dir `<DIRECTORY>`  
-All training data should be in `<DIRECTORY>`  
-default:
-* --
+* --dir `<DIRECTORY_train>`  
+All training data should be in `<DIRECTORY_train>`.  
+Required when training a model.  
+Please use the file name as the bacterial species name or taxonomy.  
+ex)  
+default: ./data_139  
+* --contig, -c `<DIRECTORY_contig>`  
+All DNA sequences you want to bin should be in `<DIRECTORY_contig>`.  
+Sequence data must be in fasta format.  
+default: ./testdata
+* --bin, -b `<BIN>`  
+Split the input DNA sequences in `<DIRECTORY_contig>` into `<BIN>` bins.  
+default:60 
+* --verbose, -v
+You can specify whether to train the model.
+Select 0 if you want to use the trained model and 2 if you want to train a model.  
+default: 0  
+* --outofbin `<FILENAME>`
+Output binning result to <FILENAME>.  
+default: ./binningresult.txt  
 
-1.use the trained model
+Regarding model learning, you have two options:  
+1.use the trained model  
+```
+python main.py --layer <LAYER> --contig <DIRECTORY> --verbose 0
+```
 
+2.train the model
+```
+python main.py --layer <LAYER> --dir <DIRECTORY> --contig <DIRECTORY> --verbose 2
+```
 
 2.train the model
 All training data should be in `<DIRECTORY>`, and Style matrices are calculated in `<LAYER>` of the model. `FILEPATH` is where contigs are located. Sequence data must be in fasta format. 
