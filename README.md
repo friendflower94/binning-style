@@ -49,7 +49,8 @@ Output binning result to <FILENAME>.
 default: ./binningresult.txt  
 
 Regarding model learning, you have two options:  
-**1.use the trained model ** 
+
+**1.use the trained model **
 ```
 python main.py --layer <LAYER> --contig <DIRECTORY_contig> --train 0 --model <MODEL>
 ```  
