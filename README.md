@@ -17,15 +17,15 @@ Regarding model learning, you have two options:
 2.train the model
 
 First, the points common to both patterns are shown below.
-* --contig '<CONTIG>'  
+* --contig `<CONTIG>`  
+Where contigs are located. Sequence data must be in fasta format.  
 default:  
-Where contigs are located. Sequence data must be in fasta format.
-* --layer '<LAYER>'  
+* --layer `<LAYER>`  
+Style matrices are calculated in `<LAYER>` of the model.  
 default:4  
-Style matrices are calculated in `<LAYER>` of the model.
-* --dir '<DIRECTORY>'   
- default:
- All training data should be in `<DIRECTORY>`
+* --dir `<DIRECTORY>`  
+All training data should be in `<DIRECTORY>`  
+default:
 * --
 
 1.use the trained model
