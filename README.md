@@ -16,10 +16,10 @@ You can divide the DNA sequences into bins according to the genomic features of 
 
 First, the points common to both patterns are shown below.
   
-* --layer `<LAYER>`  
+* --layer, -l `<LAYER>`  
 Style matrices are calculated in `<LAYER>` of the model.  
 default:4  
-* --dir `<DIRECTORY_train>`  
+* --dir, -d `<DIRECTORY_train>`  
 All training data should be in `<DIRECTORY_train>`.  
 Required when training a model.  
 Please use the file name as the bacterial species name or taxonomy.  
@@ -28,7 +28,7 @@ default: ./data_139
 * --contig, -c `<DIRECTORY_contig>`  
 All DNA sequences you want to bin should be in `<DIRECTORY_contig>`.  
 Sequence data must be in fasta format.  
-default: ./testdata
+default: ./test
 * --bin, -b `<BIN>`  
 Split the input DNA sequences in `<DIRECTORY_contig>` into `<BIN>` bins.  
 default:60 
@@ -36,31 +36,42 @@ default:60
 You can specify whether to train the model.
 Select 0 if you want to use the trained model and 2 if you want to train a model.  
 default: 0  
-* --outofbin `<FILENAME>`
+* --model, -m `<MODEL>`
+Load the model of `<MODEL>`.
+default: ./weight/modelweight.weight 
+* --numofbin, -n `<FILENAME>`
 Output binning result to <FILENAME>.  
 default: ./binningresult.txt  
 
 Regarding model learning, you have two options:  
 1.use the trained model  
 ```
-python main.py --layer <LAYER> --contig <DIRECTORY> --verbose 0
+python main.py --layer <LAYER> --contig <DIRECTORY> --verbose 0 --model <MODEL>
+```  
+ex)
+```
+python main.py --layer 4 --contig ./test --verbose 0 --model ./weight/modelweight.weight
 ```
 
 2.train the model
 ```
 python main.py --layer <LAYER> --dir <DIRECTORY> --contig <DIRECTORY> --verbose 2
 ```
-
-2.train the model
-All training data should be in `<DIRECTORY>`, and Style matrices are calculated in `<LAYER>` of the model. `FILEPATH` is where contigs are located. Sequence data must be in fasta format. 
-
-
+ex)
 ```
-python main.py --layer <LAYER> --dir <DIRECTORY> --contig <FILEPATH>
+python main.py --layer 4 --dir ./trainingdata_139 --contig ./test --verbose 2
 ```
 
-If you try other training parameters, just add `--rate` and `--epoch` arguments. And also you can control loggin level with `--verbose` argument.
+If you try other training parameters, just add `--rate` and `--epoch` arguments.  
+And also you can control loggin level with `--verbose` argument.
+* --rate, -r  
+learning rate  
+default: 0.001  
+* --epoch, -e  
+epoch for training a model    
+default: 0.001  
 
+ex)
 ```
-python main.py --layer 4 --dir ./data --contig test.fasta --rate 0.001 --epoch 100 --verbose 2
+python main.py --layer 4 --dir ./trainingdata_139 --contig ./test --rate 0.01 --epoch 200 --verbose 2
 ```
