@@ -15,12 +15,14 @@ Parameter and command examples are shown below.
 
 * --layer, -l `<LAYER>`  
 Style matrices are calculated in `<LAYER>` of the model.  
+1-6 can be selected in the current model.  
 default:4  
 * --dir, -d `<DIRECTORY_train>`  
 All training data should be in `<DIRECTORY_train>`.  
 Required when training a model.  
+Read the longest DNA sequence in each file.  
 Please use the file name as the bacterial species name or taxonomy.  
-ex)  
+ex)  bacteria__actinobacteria__actinobacteria__corynebacteriales__corynebacteriaceae__corynebacterium__diphtheriae.fasta
 default: ./data_139  
 * --contig, -c `<DIRECTORY_contig>`  
 All DNA sequences you want to bin should be in `<DIRECTORY_contig>`.  
