@@ -1,6 +1,6 @@
 # Genomic style: a deep-learning approach to characterize bacterial genome sequences
 ## Overview
-You can extract features of bacterial genome sequences with a deep learning approach.
+You can extract features of bacterial genome sequences with a deep learning approach. 
 
 ## Requirements
 * python 3.6.5 (with following packages)
