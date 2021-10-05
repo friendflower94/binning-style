@@ -82,3 +82,5 @@ ex)
 ```
 python main.py --layer 4 --dir ./trainingdata_139 --contig ./test --train 2 --rate 0.01 --epoch 200
 ```
+
+## Requirements
