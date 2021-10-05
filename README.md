@@ -76,7 +76,7 @@ default: 0.001
 
 * --epoch, -e  
 epoch for training a model    
-default: 0.001  
+default: 100  
 
 ex)
 ```
