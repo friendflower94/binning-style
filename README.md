@@ -12,23 +12,26 @@ You can divide the DNA sequences into bins according to the genomic features of 
 
 ## Usage
 
-Regarding model learning, you have two options:
-1)use the trained model
-2)train the model
+Regarding model learning, you have two options:  
+1.use the trained model  
+2.train the model
 
 First, the points common to both patterns are shown below.
-【--contig】 <CONTIG> default:
-  Where contigs are located. Sequence data must be in fasta format.
-【--layer】 <LAYER> default:4
-  Style matrices are calculated in `<LAYER>` of the model.
-【--dir】 <DIRECTORY> 
-
+*--contig <CONTIG>  
+default:  
+Where contigs are located. Sequence data must be in fasta format.
+*--layer <LAYER>  
+ default:4  
 Style matrices are calculated in `<LAYER>` of the model.
+*--dir <DIRECTORY>   
+ default:
+ All training data should be in `<DIRECTORY>`
+*--
 
-#1)use the trained model
+1.use the trained model
 
 
-#2)train the model
+2.train the model
 All training data should be in `<DIRECTORY>`, and Style matrices are calculated in `<LAYER>` of the model. `FILEPATH` is where contigs are located. Sequence data must be in fasta format. 
 
 
@@ -38,7 +41,6 @@ python main.py --layer <LAYER> --dir <DIRECTORY> --contig <FILEPATH>
 
 If you try other training parameters, just add `--rate` and `--epoch` arguments. And also you can control loggin level with `--verbose` argument.
 
-ex)
 ```
 python main.py --layer 4 --dir ./data --contig test.fasta --rate 0.001 --epoch 100 --verbose 2
 ```
