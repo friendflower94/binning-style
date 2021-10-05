@@ -11,11 +11,8 @@ You can divide the DNA sequences into bins according to the genomic features of 
   * bio 1.1.3
 
 ## Usage
+Parameter and command examples are shown below.  
 
-
-
-First, the points common to both patterns are shown below.
-  
 * --layer, -l `<LAYER>`  
 Style matrices are calculated in `<LAYER>` of the model.  
 default:4  
@@ -32,38 +29,38 @@ default: ./test
 * --bin, -b `<BIN>`  
 Split the input DNA sequences in `<DIRECTORY_contig>` into `<BIN>` bins.  
 default:60 
-* --verbose, -v
-You can specify whether to train the model.
+* --train, -t  
+You can specify whether to train the model.  
 Select 0 if you want to use the trained model and 2 if you want to train a model.  
 default: 0  
-* --model, -m `<MODEL>`
-Load the model of `<MODEL>`.
-default: ./weight/modelweight.weight 
-* --numofbin, -n `<FILENAME>`
+* --model, -m `<MODEL>`  
+Load the model of `<MODEL>`.  
+default: ./weight/modelweight.weight  
+* --out, -o `<FILENAME>`  
 Output binning result to <FILENAME>.  
 default: ./binningresult.txt  
 
 Regarding model learning, you have two options:  
-1.use the trained model  
+**1.use the trained model ** 
 ```
-python main.py --layer <LAYER> --contig <DIRECTORY> --verbose 0 --model <MODEL>
+python main.py --layer <LAYER> --contig <DIRECTORY> --train 0 --model <MODEL>
 ```  
 ex)
 ```
-python main.py --layer 4 --contig ./test --verbose 0 --model ./weight/modelweight.weight
+python main.py --layer 4 --contig ./test --train 0 --model ./weight/modelweight.weight
 ```
 
-2.train the model
+**2.train the model**
 ```
-python main.py --layer <LAYER> --dir <DIRECTORY> --contig <DIRECTORY> --verbose 2
+python main.py --layer <LAYER> --dir <DIRECTORY> --contig <DIRECTORY> --train 2
 ```
 ex)
 ```
-python main.py --layer 4 --dir ./trainingdata_139 --contig ./test --verbose 2
+python main.py --layer 4 --dir ./trainingdata_139 --contig ./test --train 2
 ```
 
-If you try other training parameters, just add `--rate` and `--epoch` arguments.  
-And also you can control loggin level with `--verbose` argument.
+If you try other training parameters, just add `--rate` and `--epoch` arguments.
+
 * --rate, -r  
 learning rate  
 default: 0.001  
@@ -73,5 +70,5 @@ default: 0.001
 
 ex)
 ```
-python main.py --layer 4 --dir ./trainingdata_139 --contig ./test --rate 0.01 --epoch 200 --verbose 2
+python main.py --layer 4 --dir ./trainingdata_139 --contig ./test --rate 0.01 --epoch 200 --train 2
 ```
