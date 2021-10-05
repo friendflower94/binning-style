@@ -4,11 +4,11 @@ Binning is the process of clustering DNA sequence into bins of the same species 
 You can divide the DNA sequences into bins according to the genomic features of bacterial genome sequences, "genomic style", with a deep learning approach, "genomic style".
 
 ## Requirements
-* python 3.6.5 (with following packages)
-  * biopython 1.79
+* python 3.7.3 (with following packages)
   * torch 1.9.1
   * numpy 1.16.4
   * bio 1.1.3
+  * biopython 1.79
 
 ## Usage
 Parameter and command examples are shown below.  
