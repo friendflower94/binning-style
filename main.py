@@ -168,7 +168,7 @@ if __name__ == "__main__":
     ### label encode
     #from sklearn.preprocessing import LabelEncoder
     #le = LabelEncoder()
-    #le = le.fit(labels_test)
+    #le = le.fit(labels_test) 
     #truelabel = le.transform(labels_test)
     
     ### evaluate clustering accuracy
