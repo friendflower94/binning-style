@@ -45,7 +45,7 @@ Load the model of `<MODEL>`.
 default: ./weight/modelweight.weight 
 
 * --out, -o `<FILENAME>`  
-Output binning result to <FILENAME>.  
+Output binning result to `<FILENAME>`.  
 default: ./binningresult.txt  
 
 Regarding model learning, you have two options:  
@@ -83,4 +83,3 @@ ex)
 python main.py --layer 4 --dir ./trainingdata_139 --contig ./test --train 2 --rate 0.01 --epoch 200
 ```
 
-## Requirements
