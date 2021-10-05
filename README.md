@@ -7,8 +7,8 @@ You can divide the DNA sequences into bins according to the genomic features of 
 * python 3.7.3 (with following packages)
   * torch 1.9.1
   * numpy 1.16.4
-  * bio 1.1.3
   * biopython 1.79
+  * bio 1.1.3
 
 ## Usage
 Parameter and command examples are shown below.  
